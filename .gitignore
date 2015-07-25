@@ -1,0 +1,5 @@
+slackd
+*.ini
+*.log
+bin/snapshot/.goxc-temp
+bin/snapshot/downloads.md
