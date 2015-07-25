@@ -14,6 +14,9 @@ $ cd slackd
 $ tar zxfv ./bin/snapshot/slackd_[flavor].tar.gz -C . --strip-components 1
 $ vim config.ini
     # create config according to usage section and save
+$ sudo vim /etc/rc.local
+	# add the following before the `exit 0`
+	# cd /path/to/slackd && nohup ./slackd -config=config.ini &
 $ nohup ./slackd -config=config.ini &
 ```
 
