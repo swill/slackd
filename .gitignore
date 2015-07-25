@@ -1,6 +1,5 @@
 slackd
 *.ini
 *.log
-_install.sh
 bin/snapshot/.goxc-temp
 bin/snapshot/downloads.md
