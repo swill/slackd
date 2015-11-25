@@ -1,4 +1,3 @@
 #!/usr/bin/env bash
 
-goxc -d=./bin -bc="linux,!arm darwin"
-rm -rf debian
+gox -output="bin/{{.Dir}}_{{.OS}}_{{.Arch}}" -os="linux darwin"

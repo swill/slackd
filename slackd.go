@@ -31,7 +31,7 @@ func main() {
 	var channel_id string
 	for _, c := range channels {
 		if c.Name == *channel {
-			channel_id = c.Id
+			channel_id = c.ID
 		}
 	}
 	if channel_id == "" {
