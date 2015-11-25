@@ -8,10 +8,10 @@ slackd is a completely stand alone application and has no external dependances. 
 
 INSTALL
 -------
+In this example I am using the `slackd_linux_amd64` binary, but you can change it to whichever flavor you need to use.
+
 ```
-$ git clone https://github.com/swill/slackd.git
-$ cd slackd
-$ tar zxfv ./bin/snapshot/slackd_[flavor].tar.gz -C . --strip-components 1
+$ wget -O slackd https://github.com/swill/slackd/blob/master/bin/slackd_linux_amd64
 $ vim config.ini
     # create config according to usage section and save
 $ sudo vim /etc/rc.local
