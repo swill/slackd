@@ -1,7 +1,7 @@
 slackd
 ======
 
-slackd is a very simple deamon that simply watches a text file (usually a log file) and pushes any lines which match a specific criteria to a [Slack](https://slack.com/) channel.  slackd allows you to specify a `line_includes` and/or a `line_excludes` regular expression to watch for, if both are provided they will both trigger a post to Slack.
+slackd is a very simple daemon that simply watches a text file (usually a log file) and pushes any lines which match a specific criteria to a [Slack](https://slack.com/) channel.  slackd allows you to specify a `line_includes` and/or a `line_excludes` regular expression to watch for, if both are provided they will both trigger a post to Slack.
 
 slackd is a completely stand alone application and has no external dependances.  It does not need to be installed, it can simply be run inplace.
 
