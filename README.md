@@ -11,7 +11,7 @@ INSTALL
 In this example I am using the `slackd_linux_amd64` binary, but you can change it to whichever flavor you need to use.
 
 ```
-$ wget -O slackd https://github.com/swill/slackd/blob/master/bin/slackd_linux_amd64
+$ wget -O slackd https://github.com/swill/slackd/raw/master/bin/slackd_linux_amd64
 $ vim config.ini
     # create config according to usage section and save
 $ sudo vim /etc/rc.local
