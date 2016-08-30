@@ -71,7 +71,10 @@ func main() {
 	}
 	for line := range log.Lines {
 		if (include != nil && include.MatchString(line.Text)) || (exclude != nil && !exclude.MatchString(line.Text)) {
-			api.PostMessage(channel_id, fmt.Sprintf("`%s`", line.Text), slack.NewPostMessageParameters())
+			api.PostMessage(
+				channel_id,
+				fmt.Sprintf("```%s```", line.Text),
+				slack.NewPostMessageParameters())
 		}
 	}
 }
