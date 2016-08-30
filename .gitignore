@@ -1,5 +1,5 @@
 slackd
 *.ini
 *.log
-bin/snapshot/.goxc-temp
-bin/snapshot/downloads.md
+_deploy.sh
+_kill.sh
