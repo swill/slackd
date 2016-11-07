@@ -3,11 +3,12 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/ActiveState/tail"
-	"github.com/nlopes/slack"
-	"github.com/vharitonsky/iniflags"
 	"os"
 	"regexp"
+
+	"github.com/hpcloud/tail"
+	"github.com/nlopes/slack"
+	"github.com/vharitonsky/iniflags"
 )
 
 var (
@@ -18,28 +19,54 @@ var (
 	excludes = flag.String("line_excludes", "", "Post line if this regexp DOES NOT match")
 )
 
-func main() {
-	iniflags.Parse()
+func getChannelId(name string, api *slack.Client) string {
+	var channel_id string
 
-	api := slack.New(*token)
+	// Check if the channel is hidden
+	groups, err := api.GetGroups(true)
+	if err != nil {
+		fmt.Println("WARN: Could not get list of groups. This is only important if channel is hidden")
+		fmt.Println(err)
+	}
+	for _, g := range groups {
+		if g.Name == name {
+			channel_id = g.ID
+		}
+	}
+	// It is not necessary to travese the open channels as well if we already have the channel id
+	if channel_id != "" {
+		return channel_id
+	}
+
 	channels, err := api.GetChannels(true)
 	if err != nil {
-		fmt.Println("\nERROR: Could not get the Slack channels\n")
+		fmt.Println("ERROR: Could not get the Slack channels")
 		fmt.Println(err)
 		os.Exit(2)
 	}
-	var channel_id string
 	for _, c := range channels {
 		if c.Name == *channel {
 			channel_id = c.ID
 		}
 	}
+
 	if channel_id == "" {
-		fmt.Println("\nERROR: Could not find the Slack channel specified.  Be sure NOT to include the '#' at the beginning.\n")
+		fmt.Println("ERROR: Could not find the Slack channel specified.  Be sure NOT to include the '#' at the beginning.\n")
 		os.Exit(2)
 	}
+	return channel_id
+}
+
+func main() {
+	iniflags.Parse()
+
+	api := slack.New(*token)
+
+	//var channel_id string
+	channel_id := getChannelId(*channel, api)
 
 	var include, exclude *regexp.Regexp
+	var err error
 	if *includes != "" {
 		include, err = regexp.Compile(*includes)
 		if err != nil {
