@@ -32,7 +32,6 @@ func getChannelId(name string, api *slack.Client) string {
 		if g.Name == name {
 			channel_id = g.ID
 		}
-		fmt.Printf("Name: %s ID: %s", g.Name, g.ID)
 	}
 	// It is not necessary to travese the open channels as well if we already have the channel id
 	if channel_id != "" {
