@@ -13,7 +13,7 @@ import (
 
 var (
 	token    = flag.String("token", "", "Your Slack token")
-	channel  = flag.String("channel", "", "The Slack channel to post to (without the leading '#')")
+	channel  = flag.String("channel", "", "The Slack channel to post to")
 	file     = flag.String("file", "", "The file path to watch for changes")
 	includes = flag.String("line_includes", "", "Post line if this regexp DOES match")
 	excludes = flag.String("line_excludes", "", "Post line if this regexp DOES NOT match")
@@ -22,10 +22,15 @@ var (
 func getChannelId(name string, api *slack.Client) string {
 	var channel_id string
 
+	// update the name if the first character of the name is '#'
+	if len([]rune(name)) > 0 && string([]rune(name)[0]) == "#" {
+		name = string([]rune(name)[1:])
+	}
+
 	// Check if the channel is hidden
 	groups, err := api.GetGroups(true)
 	if err != nil {
-		fmt.Println("WARN: Could not get list of groups. This is only important if channel is hidden")
+		fmt.Println("WARN: Could not get list of groups. This is only important if channel is hidden.")
 		fmt.Println(err)
 	}
 	for _, g := range groups {
@@ -40,18 +45,18 @@ func getChannelId(name string, api *slack.Client) string {
 
 	channels, err := api.GetChannels(true)
 	if err != nil {
-		fmt.Println("ERROR: Could not get the Slack channels")
+		fmt.Println("ERROR: Could not get the Slack channels.")
 		fmt.Println(err)
 		os.Exit(2)
 	}
 	for _, c := range channels {
-		if c.Name == *channel {
+		if c.Name == name {
 			channel_id = c.ID
 		}
 	}
 
 	if channel_id == "" {
-		fmt.Println("ERROR: Could not find the Slack channel specified.  Be sure NOT to include the '#' at the beginning.\n")
+		fmt.Println("ERROR: Could not find the Slack channel specified.  Be sure you did not comment the line in the config file by adding '#' to the channel name.")
 		os.Exit(2)
 	}
 	return channel_id
@@ -70,9 +75,9 @@ func main() {
 	if *includes != "" {
 		include, err = regexp.Compile(*includes)
 		if err != nil {
-			fmt.Println("\nERROR: Failed to compile `line_includes` regex\n")
+			fmt.Println("ERROR: Failed to compile `line_includes` regex.")
 			fmt.Println(err)
-			api.PostMessage(channel_id, "==> slackd failed to compile `line_includes` regex", slack.NewPostMessageParameters())
+			api.PostMessage(channel_id, "==> slackd failed to compile `line_includes` regex.", slack.NewPostMessageParameters())
 			api.PostMessage(channel_id, err.Error(), slack.NewPostMessageParameters())
 			os.Exit(2)
 		}
@@ -80,9 +85,9 @@ func main() {
 	if *excludes != "" {
 		exclude, err = regexp.Compile(*excludes)
 		if err != nil {
-			fmt.Println("\nERROR: Failed to compile `line_excludes` regex\n")
+			fmt.Println("ERROR: Failed to compile `line_excludes` regex.")
 			fmt.Println(err)
-			api.PostMessage(channel_id, "==> slackd failed to compile `line_excludes` regex", slack.NewPostMessageParameters())
+			api.PostMessage(channel_id, "==> slackd failed to compile `line_excludes` regex.", slack.NewPostMessageParameters())
 			api.PostMessage(channel_id, err.Error(), slack.NewPostMessageParameters())
 			os.Exit(2)
 		}
@@ -90,9 +95,9 @@ func main() {
 
 	log, err := tail.TailFile(*file, tail.Config{Follow: true})
 	if err != nil {
-		fmt.Println("\nERROR: Could not tail the specified log\n")
+		fmt.Println("ERROR: Could not tail the specified log.")
 		fmt.Println(err)
-		api.PostMessage(channel_id, "==> slackd could not tail the specified log", slack.NewPostMessageParameters())
+		api.PostMessage(channel_id, "==> slackd could not tail the specified log.", slack.NewPostMessageParameters())
 		api.PostMessage(channel_id, err.Error(), slack.NewPostMessageParameters())
 		os.Exit(2)
 	}
