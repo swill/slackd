@@ -23,7 +23,7 @@ $ nohup ./slackd -config=config.ini &
 
 USAGE
 -----
-The application is self documented, so you can review the usage at any time.  
+The application is self documented, so you can review the usage at any time.
 
 ```
 $ ./slackd -h
@@ -34,6 +34,7 @@ Usage of ./slackd:
   -line_excludes="": Post line if this regexp DOES NOT match
   -line_includes="": Post line if this regexp DOES match
   -token="": Your Slack token
+  -reopen: Should we try to reopen the file if it disappears? Useful with logrotation or programs that recreate logs
 ```
 
 
@@ -51,4 +52,5 @@ channel = errors
 file = /var/log/application.log
 line_includes = (?i)error
 line_excludes = ^[0-9]{4}/[0-9]{2}/[0-9]{2}
+reopen = true
 ```
