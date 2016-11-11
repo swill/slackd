@@ -94,7 +94,7 @@ func main() {
 		}
 	}
 
-	log, err := tail.TailFile(*file, tail.Config{Follow: true, ReOpen: *reopen})
+	log, err := tail.TailFile(*file, tail.Config{Follow: true, ReOpen: *reopen, Poll: true})
 	if err != nil {
 		fmt.Println("ERROR: Could not tail the specified log.")
 		fmt.Println(err)
