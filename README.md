@@ -52,4 +52,5 @@ channel = errors
 file = /var/log/application.log
 line_includes = (?i)error
 line_excludes = ^[0-9]{4}/[0-9]{2}/[0-9]{2}
+reopen = true
 ```
