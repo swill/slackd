@@ -12,12 +12,12 @@ import (
 )
 
 var (
-	token    = flag.String("token", "", "Your Slack token")
-	channel  = flag.String("channel", "", "The Slack channel to post to")
-	file     = flag.String("file", "", "The file path to watch for changes")
-	includes = flag.String("line_includes", "", "Post line if this regexp DOES match")
-	excludes = flag.String("line_excludes", "", "Post line if this regexp DOES NOT match")
-	reopen   = flag.Bool("reopen", false, "Reopen the file if it disappears. Useful with logrotation")
+	token    = flag.String("token", "", "Your Slack token.")
+	channel  = flag.String("channel", "", "The Slack channel to post to.")
+	file     = flag.String("file", "", "The file path to watch for changes.")
+	includes = flag.String("line_includes", "", "Post line if this regexp DOES match.")
+	excludes = flag.String("line_excludes", "", "Post line if this regexp DOES NOT match.")
+	reopen   = flag.Bool("reopen", false, "Reopen the file if it disappears. Useful with logrotation.")
 )
 
 func getChannelId(name string, api *slack.Client) string {

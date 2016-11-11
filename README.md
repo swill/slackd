@@ -27,14 +27,25 @@ The application is self documented, so you can review the usage at any time.
 
 ```
 $ ./slackd -h
-Usage of ./slackd:
-  -channel="": The Slack channel to post to (without the leading '#')
-  -config="": Path to ini config for using in go flags. May be relative to the current executable path.
-  -file="": The file path to watch for changes
-  -line_excludes="": Post line if this regexp DOES NOT match
-  -line_includes="": Post line if this regexp DOES match
-  -token="": Your Slack token
-  -reopen: Should we try to reopen the file if it disappears? Useful with logrotation or programs that recreate logs
+Usage of slackd:
+  -channel string
+      The Slack channel to post to.
+  -config string
+      Path to ini config for using in go flags. May be relative to the current executable path.
+  -configUpdateInterval duration
+      Update interval for re-reading config file set via -config flag. Zero disables config file re-reading.
+  -dumpflags
+      Dumps values for all flags defined in the app into stdout in ini-compatible syntax and terminates the app.
+  -file string
+      The file path to watch for changes.
+  -line_excludes string
+      Post line if this regexp DOES NOT match.
+  -line_includes string
+      Post line if this regexp DOES match.
+  -reopen
+      Reopen the file if it disappears. Useful with logrotation.
+  -token string
+      Your Slack token.
 ```
 
 
