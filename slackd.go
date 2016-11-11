@@ -17,6 +17,7 @@ var (
 	file     = flag.String("file", "", "The file path to watch for changes")
 	includes = flag.String("line_includes", "", "Post line if this regexp DOES match")
 	excludes = flag.String("line_excludes", "", "Post line if this regexp DOES NOT match")
+	reopen   = flag.Bool("reopen", false, "Reopen the file if it disappears. Useful with logrotation")
 )
 
 func getChannelId(name string, api *slack.Client) string {
@@ -93,7 +94,7 @@ func main() {
 		}
 	}
 
-	log, err := tail.TailFile(*file, tail.Config{Follow: true})
+	log, err := tail.TailFile(*file, tail.Config{Follow: true, ReOpen: *reopen})
 	if err != nil {
 		fmt.Println("ERROR: Could not tail the specified log.")
 		fmt.Println(err)
