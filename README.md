@@ -3,13 +3,14 @@ slackd
 
 slackd is a very simple daemon that simply watches a text file (usually a log file) and pushes any lines which match a specific criteria to a [Slack](https://slack.com/) channel.  slackd allows you to specify a `line_includes` and/or a `line_excludes` regular expression to watch for, if both are provided they will both trigger a post to Slack.
 
-slackd is a completely stand alone application and has no external dependances.  It does not need to be installed, it can simply be run inplace.
+slackd is a completely stand alone application and has no external dependencies.  It does not need to be installed, it can simply be run in-place.
 
 
 INSTALL
 -------
 In this example I am using the `slackd_linux_amd64` binary, but you can change it to whichever flavor you need to use.
 
+**Using `rc.local`**
 ```
 $ wget -O slackd https://github.com/swill/slackd/raw/master/bin/slackd_linux_amd64
 $ vim config.ini
@@ -20,31 +21,54 @@ $ sudo vim /etc/rc.local
 $ nohup ./slackd -config=config.ini &
 ```
 
+**Using `systemd`**
+```
+$ cp slackd.service.example /etc/systemd/system/slackd.service
+```
+
+Edit the environment variables and location of the binary to fit your needs.
+
+Start Service
+```
+sudo systemctl start slackd
+```
+
+Stop Service
+```
+sudo systemctl stop slackd
+```
+
+View Logs
+```
+journalctl -u slackd
+```
 
 USAGE
 -----
 The application is self documented, so you can review the usage at any time.
 
+**Note:** All uppercase flags can be set via environment variables in addition to the config file and the CLI.
+
 ```
 $ ./slackd -h
 Usage of slackd:
-  -channel string
-      The Slack channel to post to.
+  -CHANNEL string
+      The ID of the Slack channel to post to. EG: C0XXXXXXXXX
   -config string
       Path to ini config for using in go flags. May be relative to the current executable path.
   -configUpdateInterval duration
       Update interval for re-reading config file set via -config flag. Zero disables config file re-reading.
   -dumpflags
       Dumps values for all flags defined in the app into stdout in ini-compatible syntax and terminates the app.
-  -file string
+  -FILE string
       The file path to watch for changes.
-  -line_excludes string
+  -LINE_EXCLUDES string
       Post line if this regexp DOES NOT match.
-  -line_includes string
+  -LINE_INCLUDES string
       Post line if this regexp DOES match.
-  -reopen
+  -REOPEN
       Reopen the file if it disappears. Useful with logrotation.
-  -token string
+  -TOKEN string
       Your Slack token.
 ```
 

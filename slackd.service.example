@@ -1,0 +1,17 @@
+[Unit]
+Description=slackd systemd service.
+
+[Service]
+Type=simple
+User=cca-user
+Environment="TOKEN=replace"
+Environment="CHANNEL=replace"
+Environment="FILE=replace"
+Environment="LINE_INCLUDES=replace"
+Environment="LINE_EXCLUDES=replace"
+Environment="REOPEN=true"
+ExecStart=/home/cca-user/slackd
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
