@@ -8,43 +8,65 @@ slackd is a completely stand alone application and has no external dependencies.
 
 INSTALL
 -------
+
 In this example I am using the `slackd_linux_amd64` binary, but you can change it to whichever flavor you need to use.
 
-**Using `rc.local`**
-```
-$ wget -O slackd https://github.com/swill/slackd/raw/master/bin/slackd_linux_amd64
-$ vim config.ini
-    # create config according to usage section and save
-$ sudo vim /etc/rc.local
-	# add the following before the `exit 0`
-	# cd /path/to/slackd && nohup ./slackd -config=config.ini &
-$ nohup ./slackd -config=config.ini &
+### Get the binary
+
+```bash
+wget -O slackd https://github.com/swill/slackd/raw/master/bin/slackd_linux_amd64
+chmod +x slackd
 ```
 
-**Using `systemd`**
-```
-$ cp slackd.service.example /etc/systemd/system/slackd.service
+### Run with `systemd`
+
+**Configure the Service**
+
+```bash
+cp slackd.service.example /etc/systemd/system/slackd.service
+vim /etc/systemd/system/slackd.service
+# Edit the environment variables and location of the binary to fit your needs.
 ```
 
-Edit the environment variables and location of the binary to fit your needs.
+**Enable the Service**
 
-Start Service
+```bash
+sudo systemctl enable slackd
 ```
+
+**Start the Service**
+
+```bash
 sudo systemctl start slackd
 ```
 
-Stop Service
-```
+**Stop the Service**
+
+```bash
 sudo systemctl stop slackd
 ```
 
-View Logs
-```
+**View the Logs**
+
+```bash
 journalctl -u slackd
+```
+
+### Run from `rc.local`
+
+```bash
+wget -O slackd https://github.com/swill/slackd/raw/master/bin/slackd_linux_amd64
+vim config.ini
+    # create config according to usage section and save
+sudo vim /etc/rc.local
+	# add the following before the `exit 0`
+	# cd /path/to/slackd && nohup ./slackd -config=config.ini &
+nohup ./slackd -config=config.ini &
 ```
 
 USAGE
 -----
+
 The application is self documented, so you can review the usage at any time.
 
 **Note:** All uppercase flags can be set via environment variables in addition to the config file and the CLI.
@@ -67,7 +89,7 @@ Usage of slackd:
   -LINE_INCLUDES string
       Post line if this regexp DOES match.
   -REOPEN
-      Reopen the file if it disappears. Useful with logrotation.
+      Reopen the file if it disappears. Useful with log rotation.
   -TOKEN string
       Your Slack token.
 ```
@@ -76,14 +98,14 @@ Usage of slackd:
 EXAMPLE CONFIG
 --------------
 
-With this config I want to watch the `/var/log/application.log` file.  I want to post lines from the log file to the Slack channel `errors` for either of the following conditions:
+With this config I want to watch the `/var/log/application.log` file.  I want to post lines from the log file to the Slack channel with ID `C0XXXXXXXXX` for either of the following conditions:
 
 - The line includes the case insensitive text `error`.
 - The line does not start with a date in the specified format (useful for stack traces).
 
 ```
 token = ####-##########-##########-##########-######
-channel = errors
+channel = C0XXXXXXXXX
 file = /var/log/application.log
 line_includes = (?i)error
 line_excludes = ^[0-9]{4}/[0-9]{2}/[0-9]{2}
